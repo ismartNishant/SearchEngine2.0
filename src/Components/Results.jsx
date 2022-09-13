@@ -7,12 +7,12 @@ import Loading from './Loading'
 
 const Results = () => {
     const { results, isloading, getResults, searchTerm } = useResultContext();
-    const location = useLocation(); //images //news //videos
+    const location = useLocation(); //images //news //video
 
     useEffect(() => {
         if (searchTerm) {
-            if (location.pathname === "/videos") {
-                getResults(`/search/q=${searchTerm} videos`);
+            if (location.pathname === "/video") {
+                getResults(`/search/q=${searchTerm} video`);
             } else {
                 getResults(`${location.pathname}/q=${searchTerm}&num=40`)
             }
@@ -64,7 +64,7 @@ const Results = () => {
                                     {title}
                                 </p>
                                 <div className='hover:underline'>
-                                    <a href={source?.href} target='_blank'rel='noreferrer'> </a>
+                                    <a href={source?.href} target='_blank' rel='noreferrer'> </a>
                                     {source?.href}
                                 </div>
                             </a>
@@ -72,8 +72,19 @@ const Results = () => {
                     ))}
                 </div>
             );
-        case "/videos":
-            return "SEARCH";
+        case "/video":
+            return (
+                <div className='flex flex-wrap'>
+                     
+                    {results.map((video, index) => (
+                       
+                        <div key={index} className="p-2">
+                            <ReactPlayer url={video.additional_links?.[0].href}  controls width="335px" height="200px"/>
+                        </div>
+                    ))}
+
+                </div>
+            )
         default:
             return "ERROR";
     }
